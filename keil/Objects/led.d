@@ -1,0 +1,17 @@
+.\objects\led.o: ..\Source\hardware\src\led.c
+.\objects\led.o: ..\Source\hardware\inc\led.h
+.\objects\led.o: ..\Source\hardware\inc\sys.h
+.\objects\led.o: ..\Source\user\System\stm32f10x.h
+.\objects\led.o: ..\Source\kernel\core\core_cm3.h
+.\objects\led.o: F:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\led.o: ..\Source\user\System\system_stm32f10x.h
+.\objects\led.o: ..\Source\user\System\stm32f10x_conf.h
+.\objects\led.o: ..\Source\kernel\firmlib\STM32F10x_FWLib\inc\stm32f10x_can.h
+.\objects\led.o: ..\Source\user\System\stm32f10x.h
+.\objects\led.o: ..\Source\kernel\firmlib\STM32F10x_FWLib\inc\stm32f10x_fsmc.h
+.\objects\led.o: ..\Source\kernel\firmlib\STM32F10x_FWLib\inc\stm32f10x_gpio.h
+.\objects\led.o: ..\Source\kernel\firmlib\STM32F10x_FWLib\inc\stm32f10x_rcc.h
+.\objects\led.o: ..\Source\kernel\firmlib\STM32F10x_FWLib\inc\stm32f10x_usart.h
+.\objects\led.o: ..\Source\kernel\firmlib\STM32F10x_FWLib\inc\misc.h
+.\objects\led.o: ..\Source\user\inc\user_config.h
+.\objects\led.o: ..\Source\hardware\inc\timer.h
