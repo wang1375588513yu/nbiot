@@ -70,10 +70,21 @@ void NBIOT_Status_Reset(void)
 #ifdef parse_at_commard
 static void Nbiot_AT_Reset(void)
 {
-    nbiot_at_step = NBIOT_AT_TEST;
-    nbiot_at_delay = 1500;
-    nbiot_send_request = false;
+	nbiot_at_step = NBIOT_AT_TEST;
+	nbiot_at_delay = 1500;
+	nbiot_send_request = false;
 }
+#if 0
+static void Nbiot_Booting(void)
+{
+	if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"	M5310-A", 7))
+	{
+		nbiot_at_step = NBIOT_AT_TEST;
+		nbiot_at_delay = 1500;
+		nbiot_send_request = false;
+	}
+}
+#endif
 
 static void Nbiot_AT_Test(void)
 {
@@ -320,11 +331,7 @@ unsigned char NBIOT_login_onenet_event = 0;		// 登陆ONENET事件
 static void Nbiot_AT_MIPLOPEN(void)
 {
     u8 *find=NULL,*data=NULL,dot=0;
-
-    if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"OK", 2))
-    {   //指令发送成功
-		
-    }
+	static unsigned char errcnt = 0;
 
     if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"+MIPLEVENT:", 11))
     {
@@ -335,7 +342,7 @@ static void Nbiot_AT_MIPLOPEN(void)
         if(NBIOT_login_onenet_event == 6)	//bootstrap 流程成功（启用 bootstrap 服务方返回）
         {
             nbiot_logic_onenet_flag = true;		//登陆成功
-            nbiot_at_step=NBIOT_NORMAL;		//进入正常，可以收发数据
+            nbiot_at_step=NBIOT_NORMAL;			//进入正常，可以收发数据
             nbiot_at_delay=500;
             nbiot_send_request=false;
         }
@@ -347,6 +354,15 @@ static void Nbiot_AT_MIPLOPEN(void)
             nbiot_send_request=false;
         }
     }
+	else if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"error", 5))
+	{
+		errcnt++;
+		if(errcnt > NBIOT_ERROR_CNT_MAX)
+		{
+			NBIOT_init();
+			errcnt = 0;
+		}
+	}
 }
 
 static void Nbiot_AT_MIPLCLOSE(void)
@@ -422,6 +438,12 @@ static void NBIOT_parse_AT_loop(void)
                 Nbiot_AT_Reset();
                 break;
             }
+			#if 0
+			case NBIOT_BOOTING:
+			{
+				Nbiot_Booting();
+			}
+			#endif
             case NBIOT_AT_TEST:			//发送AT指令
             {
                 Nbiot_AT_Test();
@@ -534,6 +556,7 @@ static void NBIOT_AT_loop(void)
         }
         case NBIOT_AT_TEST:			//发送AT指令
         {
+			Pipe1_Reset(nbiot_recv_pipe);
             NBIOT_Printf("AT\r\n");
             nbiot_at_delay=1000;
             NBIOT_DEBUG("\r\nNBIOT_AT_TEST\r\n");
@@ -678,10 +701,11 @@ static void NBIOT_loop(void)
     nbiot_run_timespan++;
 	nbiot_power_loop();
 	
-	if(nbiot_run_timespan > 5 && (nbiot_at_step == NBIOT_RESET))
+	if(nbiot_run_timespan > 8 && (nbiot_at_step == NBIOT_RESET))
     {
         NBIOT_DEBUG("gprs_at_step = NBIOT_AT_TEST\r\n");
         nbiot_at_step = NBIOT_AT_TEST;
+		Pipe1_Reset(nbiot_recv_pipe);//清除掉开机信息
         nbiot_at_delay = 2000;
     }
 
