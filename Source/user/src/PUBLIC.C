@@ -73,6 +73,7 @@ bool remote_keep_control_enable=false;
 void Pipe1_Reset(Pipe1_t *pipe)
 {
     if(pipe==NULL)return;
+	memset((void *)pipe->buf, 0, pipe->size);
     pipe->pin=0;
     pipe->pout=0;
     pipe->sum=0;

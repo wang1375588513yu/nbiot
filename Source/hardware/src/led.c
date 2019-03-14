@@ -20,6 +20,7 @@
 
 #include "led.h"
 #include "timer.h"
+#include "user_m5310.h"
 
 void user_led_init(void)
 {
@@ -104,7 +105,15 @@ static void user_led_loop(void)
     softimersec=Get_SysTick();
 
 	RED_LED = ~RED_LED;
-	BLUE_LED = ~BLUE_LED;
+	if(Get_login_success_flag() == true)
+	{
+		BLUE_LED = LED_ON;
+	}
+	else
+	{
+		BLUE_LED = ~BLUE_LED;
+	}
+	
 }
 
 void user_led_task(void)

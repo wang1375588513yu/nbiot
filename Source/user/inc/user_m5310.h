@@ -43,7 +43,6 @@ extern Pipe1_t *nbiot_recv_pipe;
 
 void NBIOT_init(void);
 void NBIOT_task(void);
-bool Get_isready_flag(void);
-
+bool Get_login_success_flag(void);
 
 #endif
