@@ -32,6 +32,7 @@ char nbiotIMEIstring[IMEILEN+1] = {0};			//模块IMEI
 
 unsigned int  nbiot_run_timespan=0;				//从复位到当前的时间差——运行秒数
 unsigned int  nbiot_at_delay = 0xfffffff;			//AT命令延时
+unsigned int  nbiot_is_connected_countdown = 3000;
 
 unsigned char nbiot_signal_strenth_rssi=0;		//接收信号强度
 unsigned char nbiot_signal_strenth_ber=0;		//信号等级
@@ -65,6 +66,7 @@ void NBIOT_Status_Reset(void)
     nbiot_login_onenet_flag = false;
     nbiot_close_success_flag = false;
 	upload_data_cnt = 0;	
+	nbiot_is_connected_countdown = 3000;
     nbiot_at_step = NBIOT_RESET;
 }
 
@@ -87,21 +89,8 @@ void NBIOT_init(void)
 #ifdef parse_at_commard
 static void Nbiot_AT_Reset(void)
 {
-//	nbiot_at_step = NBIOT_AT_TEST;
-//	nbiot_at_delay = 1500;
-	nbiot_send_request = false;
+	return;
 }
-#if 0
-static void Nbiot_Booting(void)
-{
-	if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"	M5310-A", 7))
-	{
-		nbiot_at_step = NBIOT_AT_TEST;
-		nbiot_at_delay = 1500;
-		nbiot_send_request = false;
-	}
-}
-#endif
 
 static void Nbiot_AT_Test(void)
 {
@@ -278,27 +267,6 @@ static void Nbiot_AT_CGATT(unsigned char *tail)
         }
     }
 }
-#ifdef Optional
-static void Nbiot_AT_CSCON(void)
-{
-    if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"OK", 2))
-    {
-        nbiot_at_step=NBIOT_AT_CEREG_WRITE;
-        nbiot_at_delay=500;
-        nbiot_send_request=false;
-    }
-}
-
-static void Nbiot_AT_CEREG(void)
-{
-    if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"OK", 2))
-    {
-        nbiot_at_step=NBIOT_AT_MIPLCREATE;
-        nbiot_at_delay=500;
-        nbiot_send_request=false;
-    }
-}
-#endif
 
 static void Nbiot_AT_MIPLCREATE(void)
 {
@@ -313,7 +281,7 @@ static void Nbiot_AT_MIPLCREATE(void)
         nbiot_at_delay=500;
         nbiot_send_request=false;
     }
-	else if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"error", 5))
+	else if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"ERROR", 5))
 	{
 		errcnt++;
 		if(errcnt > NBIOT_ERROR_CNT_MAX)
@@ -361,7 +329,6 @@ static void Nbiot_AT_MIPLOPEN(void)
 		nbiot_at_step=NBIOT_NORMAL;			//进入正常，可以收发数据
 		nbiot_at_delay=500;
 		nbiot_send_request=false;
-
     }
 	else if((u8*)my_memmem((const void*)nbiot_recv_pipe->buf, nbiot_recv_pipe->sum,"+MIPLEVENT:0,7", 14))
 	{//登陆成功
@@ -434,12 +401,6 @@ static void NBIOT_parse_AT_loop(void)
                 Nbiot_AT_Reset();
                 break;
             }
-			#if 0
-			case NBIOT_BOOTING:
-			{
-				Nbiot_Booting();
-			}
-			#endif
             case NBIOT_AT_TEST:			//发送AT指令
             {
                 Nbiot_AT_Test();
@@ -470,18 +431,6 @@ static void NBIOT_parse_AT_loop(void)
                 Nbiot_AT_CGATT(find);
                 break;
             }
-			#ifdef Optional
-            case NBIOT_AT_CSCON_WRITE:
-            {
-                Nbiot_AT_CSCON();
-                break;
-            }
-            case NBIOT_AT_CEREG_WRITE:
-            {
-                Nbiot_AT_CEREG();
-                break;
-            }
-			#endif
             case NBIOT_AT_MIPLCREATE:
             {
                 Nbiot_AT_MIPLCREATE();
@@ -596,22 +545,6 @@ static void NBIOT_AT_loop(void)
             NBIOT_DEBUG("\r\nNBIOT_AT_CGATT\r\n");
             break;
         }
-		#ifdef Optional
-        case NBIOT_AT_CSCON_WRITE:
-        {
-            NBIOT_Printf("AT+CSCON=1\r\n");
-            nbiot_at_delay=1000;
-            NBIOT_DEBUG("\r\nNBIOT_AT_CSCON_WRITE\r\n");
-            break;
-        }
-        case NBIOT_AT_CEREG_WRITE:
-        {
-            NBIOT_Printf("AT+CEREG=1\r\n");
-            nbiot_at_delay=1000;
-            NBIOT_DEBUG("\r\nNBIOT_AT_CEREG_WRITE\r\n");
-            break;
-        }
-		#endif
         case NBIOT_AT_MIPLCREATE:
         {
 			NBIOT_Printf("AT+MIPLCREATE=49,130031F10003F2002304001100000000000000123138332E3233302E34302E34303A35363833000131F30008C000000000,0,49,0\r\n");
@@ -626,8 +559,7 @@ static void NBIOT_AT_loop(void)
 //			NBIOT_Printf("AT+MIPLADDOBJ=0,3304,1,\"1\",1,0\r\n");		//注册湿度object
 			#else
 			NBIOT_Printf("AT+MIPLADDOBJ=0,3336,0,\"0\",0,0\r\n");
-			#endif
-            
+			#endif            
             nbiot_at_delay=1000;
             NBIOT_DEBUG("\r\nNBIOT_AT_MIPLADDOBJ\r\n");
             break;
@@ -709,36 +641,39 @@ static void NBIOT_loop(void)
         nbiot_at_delay = 2000;
     }
 
-    if(nbiot_at_step == NBIOT_AT_MIPLOPEN)
+    if(nbiot_at_step == NBIOT_NORMAL)
     {   //登陆会设置30秒超时
-        nbiot_logic_onenet_timeout++;
-        if(nbiot_logic_onenet_timeout > 30)
-        {
-            nbiot_login_onenet_flag = true;
-        }
+		nbiot_is_connected_countdown--;//登录成功onenet平台后倒计时
     }
     else
     {
-        nbiot_logic_onenet_timeout = 0;
+        nbiot_is_connected_countdown = 3000;
     }
 }
 
 DHT11_Data_T* dht11_data;
 static void NBIOT_Report_Data(void)
 {   //上报数据函数
-	#ifdef TEMPERATURE_HUMIDITY
-	dht11_data = Get_Dht11_Data();
-	NBIOT_Printf("AT+MIPLNOTIFY=0,0,3303,0,5700,4,4,\"33.5\",0,0\r\n");		//上报温度数据, dht11_data->temperature
-//	NBIOT_Printf("AT+MIPLNOTIFY=0,0,3304,0,5700,4,4,\"%s\",0,0", dht11_data->humidity);			//上报湿度数据
-	#else
+	unsigned char Data_unit[200];
+	NBIOT_MIPLNOTIFY_T nbiot_miplnotify = {0};
+
+    if(nbiot_login_onenet_flag == false)return;
+	nbiot_miplnotify.object_id = 3303;
+	nbiot_miplnotify.resource_id = 5700;
+	nbiot_miplnotify.value = "37.5";
+	nbiot_miplnotify.data_len = strlen(nbiot_miplnotify.value);
 	
-	#endif
+	memset((void*)Data_unit, 0, 200);
+	sprintf((char*)Data_unit,"AT+MIPLNOTIFY=0,0,%d,0,%d,4,%d,\"%s\",0,0\r\n",nbiot_miplnotify.object_id,nbiot_miplnotify.resource_id,nbiot_miplnotify.data_len,nbiot_miplnotify.value);
+
+	uart2_output((const unsigned char*)Data_unit, strlen((const char*)Data_unit));
+
 }
 
 
 unsigned int nbiot_upload_loop_delay = 0;		//上报数据loop 延时，倒计时到0就上报一条
 void NBIOT_updata_loop(void)
-{
+{/*上报数据的loop，*/
 	static unsigned int timersec=0xffffffff;
     if(timersec==Get_SysTick())return;
     timersec=Get_SysTick();		/*1s进来一次*/
@@ -755,12 +690,12 @@ void NBIOT_updata_loop(void)
 		NBIOT_Report_Data();		//上报一条数据
 		upload_data_cnt++;
 		nbiot_upload_loop_delay = 10;
-		if(upload_data_cnt > 20)
+		if(upload_data_cnt == 20)		//上报20条数据
 		{
 			upload_data_cnt = 0;
 			nbiot_at_step = NBIOT_AT_MIPLCLOSE;
 			nbiot_at_delay = 1000;
-			Pipe1_Reset(nbiot_recv_pipe);
+			Pipe1_Reset(nbiot_recv_pipe);//清空buf
 		}
 	}
 }
@@ -779,7 +714,7 @@ void NBIOT_task(void)
 	if(nbiot_at_step != NBIOT_NORMAL)
 	{//没有登录的时候去执行at指令
 		NBIOT_parse_AT_loop();	//解析模块的回应信息
-		NBIOT_AT_loop();			//发送AT指令
+		NBIOT_AT_loop();		//发送AT指令
 	} 
 	else
 	{//登录成功进入正常模式后发送数据

@@ -267,7 +267,7 @@ I (..\Source\kernel\firmlib\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x5C88A41B)
 I (..\Source\kernel\firmlib\STM32F10x_FWLib\inc\misc.h)(0x5C88A41B)
 I (..\Source\user\inc\user_config.h)(0x5C88A41B)
 I (..\Source\hardware\inc\timer.h)(0x5C88A41B)
-I (..\Source\user\inc\user_m5310.h)(0x5C89EABE)
+I (..\Source\user\inc\user_m5310.h)(0x5C8B41D2)
 I (..\Source\user\inc\PUBLIC.H)(0x5C88A41B)
 I (E:\Keil_v5\ARM\ARMCC\include\string.h)(0x599ECD2C)
 I (..\Source\user\inc\common.h)(0x5C88A41B)
@@ -445,7 +445,7 @@ I (..\Source\user\inc\user_led.h)(0x5C88A41B)
 I (..\Source\hardware\inc\usart.h)(0x5C88A41B)
 I (E:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (E:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x599ECD2A)
-I (..\Source\user\inc\user_m5310.h)(0x5C89EABE)
+I (..\Source\user\inc\user_m5310.h)(0x5C8B41D2)
 F (..\Source\user\src\chip_flash.c)(0x5C88A41B)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\Source\kernel\core -I ..\Source\kernel\firmlib\STM32F10x_FWLib\inc -I ..\Source\hardware\inc -I ..\Source\user\inc -I ..\Source\user\System-I.\RTE\_nbiot_gps-IE:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-IE:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F10X_MD -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\chip_flash.o --omf_browse .\objects\chip_flash.crf --depend .\objects\chip_flash.d)
 I (E:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599ECD2E)
 I (E:\Keil_v5\ARM\ARMCC\include\string.h)(0x599ECD2C)
@@ -552,8 +552,8 @@ I (..\Source\kernel\firmlib\STM32F10x_FWLib\inc\stm32f10x_rcc.h)(0x5C88A41B)
 I (..\Source\kernel\firmlib\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x5C88A41B)
 I (..\Source\kernel\firmlib\STM32F10x_FWLib\inc\misc.h)(0x5C88A41B)
 I (..\Source\user\inc\user_config.h)(0x5C88A41B)
-F (..\Source\user\src\user_m5310.c)(0x5C89F359)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\Source\kernel\core -I ..\Source\kernel\firmlib\STM32F10x_FWLib\inc -I ..\Source\hardware\inc -I ..\Source\user\inc -I ..\Source\user\System-I.\RTE\_nbiot_gps-IE:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-IE:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F10X_MD -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\user_m5310.o --omf_browse .\objects\user_m5310.crf --depend .\objects\user_m5310.d)
-I (..\Source\user\inc\user_m5310.h)(0x5C89EABE)
+F (..\Source\user\src\user_m5310.c)(0x5C8B42D1)(--c99 -c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I ..\Source\kernel\core -I ..\Source\kernel\firmlib\STM32F10x_FWLib\inc -I ..\Source\hardware\inc -I ..\Source\user\inc -I ..\Source\user\System-I.\RTE\_nbiot_gps-IE:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-IE:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="527" -DSTM32F10X_MD -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER-o .\objects\user_m5310.o --omf_browse .\objects\user_m5310.crf --depend .\objects\user_m5310.d)
+I (..\Source\user\inc\user_m5310.h)(0x5C8B41D2)
 I (..\Source\hardware\inc\sys.h)(0x5C88A41B)
 I (..\Source\user\System\stm32f10x.h)(0x5C88A41B)
 I (..\Source\kernel\core\core_cm3.h)(0x5C88A41B)

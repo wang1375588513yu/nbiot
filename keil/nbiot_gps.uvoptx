@@ -158,106 +158,104 @@
           <Name>200,50,700</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>392</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134230370</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Source\user\src\user_m5310.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\nbiot_gps\../Source/user/src/user_m5310.c\392</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sec_tick,0x0A</ItemText>
+          <ItemText>nbiot_power_enable</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>millisec_tick,0x0A</ItemText>
+          <ItemText>sec_tick,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nbiot_at_delay,0x0A</ItemText>
+          <ItemText>millisec_tick,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nbiot_power_enable</ItemText>
+          <ItemText>nbiot_at_step</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sec_tick,0x0A</ItemText>
+          <ItemText>nbiot_logic_onenet_flag,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>millisec_tick,0x0A</ItemText>
+          <ItemText>nbiot_is_ready,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nbiot_at_step</ItemText>
+          <ItemText>upload_data_cnt</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nbiot_logic_onenet_flag,0x0A</ItemText>
+          <ItemText>nbiot_send_pipe</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nbiot_is_ready,0x0A</ItemText>
+          <ItemText>dht11_data</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>upload_data_cnt</ItemText>
+          <ItemText>nbiot_upload_loop_delay,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nbiot_send_pipe</ItemText>
+          <ItemText>upload_data_cnt,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dht11_data</ItemText>
+          <ItemText>nbiot_recv_pipe</ItemText>
         </Ww>
         <Ww>
           <count>12</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nbiot_upload_loop_delay,0x0A</ItemText>
+          <ItemText>_txBuffer</ItemText>
         </Ww>
         <Ww>
           <count>13</count>
           <WinNumber>1</WinNumber>
-          <ItemText>upload_data_cnt,0x0A</ItemText>
+          <ItemText>nbiot_miplnotify</ItemText>
         </Ww>
         <Ww>
           <count>14</count>
           <WinNumber>1</WinNumber>
-          <ItemText>nbiot_recv_pipe</ItemText>
+          <ItemText>buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>len,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>16</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>Data_unit</ItemText>
+        </Ww>
+        <Ww>
+          <count>17</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>nbiot_miplnotify,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>8</SubType>
-          <ItemText>\\nbiot_gps\../Source/hardware/src/m5310_hard.c\nbiot_send_pipe.buf</ItemText>
+          <ItemText>Data_unit</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
